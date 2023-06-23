@@ -1,6 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+
+  const Register = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:8000/register", {
+        username,
+        phone,
+        password,
+      });
+      if (response.data.status === "success") {
+        alert(response.data.message);
+        navigate("/login");
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div>
       <div className="flex flex-col items-center justify-center min-h-screen py-6 bg-gray-50 px-4 sm:px-6 lg:px-8">
@@ -8,7 +34,7 @@ export default function Register() {
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Register New Account</h2>
           </div>
-          <form className="mt-8 space-y-6">
+          <form className="mt-8 space-y-6" onSubmit={Register}>
             <div className="rounded-md shadow-sm -space-y-px">
               <div className="mb-7">
                 <label htmlFor="username" className="sr-only">
@@ -22,7 +48,8 @@ export default function Register() {
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="username"
-                  defaultValue=""
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div className="mb-7">
@@ -37,7 +64,8 @@ export default function Register() {
                   required
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Nomor Telepon"
-                  defaultValue=""
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
             </div>
@@ -53,7 +81,8 @@ export default function Register() {
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
-                defaultValue=""
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div>

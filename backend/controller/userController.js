@@ -148,6 +148,7 @@ export const resetPassword = async (req, res) => {
         message: "Password failed to reset",
       });
     }
+    req.session.destroy();
   } catch (error) {
     console.log(error.message);
   }

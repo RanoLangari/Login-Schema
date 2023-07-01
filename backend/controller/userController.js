@@ -116,7 +116,7 @@ export const verifyOTP = async (req, res) => {
   } else {
     res.status(200).json({
       status: "failed",
-      message: "OTP not verified",
+      message: "Wrong OTP",
     });
   }
 };

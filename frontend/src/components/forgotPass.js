@@ -1,23 +1,46 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 export default function ForgotPass() {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
   const [phone, setPhone] = useState("");
   const navigate = useNavigate();
   const sendOTP = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
+      const sendOtp = await axios.post(
         "http://localhost:8000/forgotpass",
         {
           phone,
         },
         { withCredentials: true }
       );
-      navigate("/forgetpass/otp");
-
-      alert("OTP sent");
-    } catch (error) {}
+      if (sendOtp.data.status === "success") {
+        Toast.fire({
+          icon: "success",
+          title: sendOtp.data.message,
+        });
+        navigate("/forgotpass/otp");
+      } else {
+        Toast.fire({
+          icon: "error",
+          title: sendOtp.data.message,
+        });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (

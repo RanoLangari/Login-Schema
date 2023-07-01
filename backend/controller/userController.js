@@ -22,7 +22,7 @@ export const registerUser = async (req, res) => {
         message: "User has been registered",
       });
     } else {
-      res.status(404).json({
+      res.status(200).json({
         status: "failed",
         message: "User failed to register",
       });
@@ -45,7 +45,7 @@ export const getUser = async (req, res) => {
       if (!match) {
         res.status(200).json({
           status: "failed",
-          message: "Password wrong",
+          message: "Wrong Password",
         });
       } else {
         req.session.phone = data.phone;
@@ -88,13 +88,13 @@ export const forgotPass = async (req, res) => {
           message: "OTP has been sent",
         });
       } else {
-        res.status(404).json({
+        res.status(200).json({
           status: "failed",
           message: "OTP failed to send",
         });
       }
     } else {
-      res.status(404).json({
+      res.status(200).json({
         status: "failed",
         message: "phone number not registered",
       });
@@ -114,7 +114,7 @@ export const verifyOTP = async (req, res) => {
       message: "OTP verified",
     });
   } else {
-    res.status(404).json({
+    res.status(200).json({
       status: "failed",
       message: "OTP not verified",
     });
@@ -143,7 +143,7 @@ export const resetPassword = async (req, res) => {
         message: "Password has been reset",
       });
     } else {
-      res.status(404).json({
+      res.status(200).json({
         status: "failed",
         message: "Password failed to reset",
       });

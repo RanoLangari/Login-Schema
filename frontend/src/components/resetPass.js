@@ -1,20 +1,38 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function ResetPass() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
 
   const resetPass = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8000/resetpass", { password }, { withCredentials: true });
-      if (res.data.status === "success") {
-        alert(res.data.message);
+      const response = await axios.post("http://localhost:8000/resetpass", { password }, { withCredentials: true });
+      if (response.data.status === "success") {
+        Toast.fire({
+          icon: "success",
+          title: response.data.message,
+        });
         navigate("/login");
       } else {
-        alert(res.data.message);
+        Toast.fire({
+          icon: "error",
+          title: response.data.message,
+        });
       }
     } catch (err) {
       console.log(err);

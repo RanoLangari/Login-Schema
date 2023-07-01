@@ -1,12 +1,24 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Register() {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
 
   const Register = async (e) => {
     e.preventDefault();
@@ -17,10 +29,16 @@ export default function Register() {
         password,
       });
       if (response.data.status === "success") {
-        alert(response.data.message);
+        Toast.fire({
+          icon: "success",
+          title: response.data.message,
+        });
         navigate("/login");
       } else {
-        alert(response.data.message);
+        Toast.fire({
+          icon: "error",
+          title: response.data.message,
+        });
       }
     } catch (error) {
       console.log(error.message);

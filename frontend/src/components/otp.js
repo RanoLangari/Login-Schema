@@ -1,25 +1,45 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Otp() {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
+
   const verifyOTP = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
+      const response = await axios.post(
         "http://localhost:8000/verifyotp",
         {
           otp: otp,
         },
         { withCredentials: true }
       );
-      if (res.data.status === "success") {
+      if (response.data.status === "success") {
+        Toast.fire({
+          icon: "success",
+          title: response.data.message,
+        });
         navigate("/resetpass");
       } else {
-        alert("OTP salah");
+        Toast.fire({
+          icon: "error",
+          title: response.data.message,
+        });
       }
     } catch (error) {
       console.log(error.message);

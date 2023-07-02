@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -18,6 +18,20 @@ export default function Otp() {
       toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
   });
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/checkotp", { withCredentials: true });
+        if (response.data.status !== "success") {
+          navigate("/forgotpass");
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    checkAuth();
+  }, []);
 
   const verifyOTP = async (e) => {
     e.preventDefault();

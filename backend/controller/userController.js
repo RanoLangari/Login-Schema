@@ -48,10 +48,10 @@ export const getUser = async (req, res) => {
           message: "Wrong Password",
         });
       } else {
-        req.session.phone = data.phone;
+        req.session.username = data.username;
         res.status(200).json({
           status: "success",
-          message: "Login success",
+          message: "Login Success",
         });
       }
     } else {
@@ -151,5 +151,47 @@ export const resetPassword = async (req, res) => {
     req.session.destroy();
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+export const checkSession = (req, res) => {
+  if (req.session.username) {
+    res.status(200).json({
+      status: "success",
+      message: "Session Found",
+    });
+  } else {
+    res.status(200).json({
+      status: "failed",
+      message: "Session Not Found",
+    });
+  }
+};
+
+export const checkOTP = (req, res) => {
+  if (req.session.otp) {
+    res.status(200).json({
+      status: "success",
+      message: "OTP Found",
+    });
+  } else {
+    res.status(200).json({
+      status: "failed",
+      message: "OTP Not Found",
+    });
+  }
+};
+
+export const checkPhone = async (req, res) => {
+  if (req.session.phone) {
+    res.status(200).json({
+      status: "success",
+      message: "Phone Found",
+    });
+  } else {
+    res.status(200).json({
+      status: "failed",
+      message: "Phone Not Found",
+    });
   }
 };

@@ -1,4 +1,4 @@
-# MERN (mysql, express, react, node) Login Schema and CRUD Mahasiswa Data
+# MERN (mysql, express, react, node) Login and CRUD Mahasiswa Data Schema
 
 the login schema with the forgot password feature uses twilio library to send OTP to phone number and simple CRUD Mahasiswa data
 

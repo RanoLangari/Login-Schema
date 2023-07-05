@@ -6,6 +6,8 @@ import Otp from "./components/otp.js";
 import LandingPage from "./components/landingPage.js";
 import ResetPass from "./components/resetPass.js";
 import NotFound from "./components/notFound.js";
+import AddMahasiswa from "./components/addMahasiswa.js";
+import EditMahasiswa from "./components/editMahasiswa.js";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/forgotpass" element={<ForgotPass />} />
         <Route path="/forgotpass/otp" element={<Otp />} />
         <Route path="/resetpass" element={<ResetPass />} />
+        <Route path="/addmahasiswa" element={<AddMahasiswa />} />
+        <Route path="/editmahasiswa/:id" element={<EditMahasiswa />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>

@@ -1,11 +1,12 @@
-# Login Schema
-the login schema (mysql, express, react, node) with the forgot password feature uses twilio library to send OTP to phone number
+# MERN (mysql, express, react, node) Login Schema and CRUD Mahasiswa Data
+
+the login schema with the forgot password feature uses twilio library to send OTP to phone number and simple CRUD Mahasiswa data
 
 ### `npm install`
-make sure you run 'npm install' before 'npm run start' to install dependecies
 
+type cd frontend and cd backend on your CLI and run 'npm install' before running this WebApp to install all dependecies
 
 ### `npm run start`
 
 Runs the app in the development mode.
-Open [http://localhost:8000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:8000](http://localhost:8000) on backend folder and open [http://localhost:3000](http://localhost:3000) on frontend folder to view it in your browser.

@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import userRoutes from "./routes/userRoute.js";
+import mahasiswaRoutes from "./routes/mahasiswaRoute.js";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
@@ -26,6 +27,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(userRoutes);
+app.use(mahasiswaRoutes);
 app.use(cookieParser());
 
 app.listen(port, () => {

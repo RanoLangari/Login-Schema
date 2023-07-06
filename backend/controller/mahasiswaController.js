@@ -1,4 +1,3 @@
-import db from "../config/database.js";
 import mahasiswa from "../model/mahasiswaModel.js";
 import moment from "moment";
 moment().format();

@@ -1,6 +1,5 @@
 import user from "../model/loginModel.js";
 import bcrypt from "bcrypt";
-import { response } from "express";
 import twilio from "twilio";
 const saltRounds = 10;
 const accountSid = process.env.TWILIO_ACCOUNT_SID;

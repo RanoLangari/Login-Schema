@@ -193,13 +193,13 @@ export const resetPassword = async (req, res) => {
         status: "success",
         message: "Password has been reset",
       });
+      req.session.destroy();
     } else {
       res.status(200).json({
         status: "failed",
         message: "Password failed to reset",
       });
     }
-    req.session.destroy();
   } catch (error) {
     console.log(error.message);
   }

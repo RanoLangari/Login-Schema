@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -23,17 +25,23 @@ export default function Register() {
   const Register = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8000/register", {
-        username,
-        phone,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/register",
+        {
+          username,
+          phone,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       if (response.data.status === "success") {
         Toast.fire({
           icon: "success",
           title: response.data.message,
         });
-        navigate("/login");
+        navigate("/verifyotpregister");
       } else {
         Toast.fire({
           icon: "error",
@@ -72,18 +80,19 @@ export default function Register() {
               </div>
               <div className="mb-7">
                 <label htmlFor="phone" className="sr-only">
-                  phone
+                  Phone
                 </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  type="phone"
-                  autoComplete="phone"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Nomor Telepon"
+                <PhoneInput
+                  inputStyle={{ width: "100%" }}
+                  country={"id"}
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(phone) => setPhone(phone)}
+                  inputProps={{
+                    name: "phone",
+                    required: true,
+                    autoFocus: true,
+                    enableSearch: true,
+                  }}
                 />
               </div>
             </div>

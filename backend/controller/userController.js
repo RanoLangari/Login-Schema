@@ -9,24 +9,77 @@ const client = twilio(accountSid, authToken);
 
 export const registerUser = async (req, res) => {
   try {
+    const otp = Math.floor(100000 + Math.random() * 900000);
     let { username, password, phone } = req.body;
     const hash = await bcrypt.hash(password, saltRounds);
-    const data = await user.create({
-      username: username,
-      password: hash,
-      phone: phone,
+    const fixPhone = `+${phone}`;
+    const phoneExist = await user.findOne({
+      where: {
+        phone: fixPhone,
+      },
     });
-    if (data) {
+    if (phoneExist) {
+      return res.status(200).json({
+        status: "failed",
+        message: "Phone number already registered",
+      });
+    }
+    const message = await client.messages.create({
+      body: `Your OTP is ${otp}`,
+      from: "+14178043519",
+      to: `${fixPhone}`,
+    });
+    if (message) {
+      req.session.otp = otp;
+      req.session.phone = fixPhone;
+      req.session.username = username;
+      req.session.password = hash;
       res.status(200).json({
         status: "success",
-        message: "User has been registered",
+        message: "OTP has been sent",
       });
     } else {
       res.status(200).json({
         status: "failed",
-        message: "User failed to register",
+        message: "OTP failed to send",
       });
     }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const verifyOtpRegister = async (req, res) => {
+  try {
+    const { otp } = req.body;
+    const otpSession = req.session.otp;
+    const username = req.session.username;
+    const password = req.session.password;
+    const phone = req.session.phone;
+    if (otp == otpSession) {
+      const data = await user.create({
+        username,
+        password,
+        phone,
+      });
+      if (data) {
+        res.status(200).json({
+          status: "success",
+          message: "User has been registered",
+        });
+      } else {
+        res.status(200).json({
+          status: "failed",
+          message: "User failed to register",
+        });
+      }
+    } else {
+      res.status(200).json({
+        status: "failed",
+        message: "Wrong OTP",
+      });
+    }
+    req.session.destroy();
   } catch (error) {
     console.log(error.message);
   }
@@ -66,8 +119,8 @@ export const login = async (req, res) => {
 };
 
 export const forgotPass = async (req, res) => {
-  const phone = req.body.phone;
   const otp = Math.floor(100000 + Math.random() * 900000);
+  const phone = `+${req.body.phone}`;
   try {
     const data = await user.findOne({
       where: {
@@ -78,7 +131,7 @@ export const forgotPass = async (req, res) => {
       const message = await client.messages.create({
         body: `Your OTP is ${otp}`,
         from: "+14178043519",
-        to: `+62${phone}`,
+        to: `${phone}`,
       });
       if (message) {
         req.session.otp = otp;
@@ -124,7 +177,6 @@ export const verifyOTP = async (req, res) => {
 export const resetPassword = async (req, res) => {
   const { password } = req.body;
   const phone = req.session.phone;
-  console.log(req.session);
   const hash = await bcrypt.hash(password, saltRounds);
   try {
     const update = await user.update(

@@ -104,7 +104,7 @@ export default function LandingPage() {
                               withCredentials: true,
                             });
                             if (response.data.status === "success") {
-                              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                              Swal.fire("Deleted!", "Success deleted.", "success");
                               getData();
                             }
                           } catch (error) {

@@ -1,4 +1,4 @@
-import { forgotPass, login, registerUser, verifyOTP, resetPassword, checkSession, checkOTP, checkPhone } from "../controller/userController.js";
+import { forgotPass, login, registerUser, verifyOTP, resetPassword, checkSession, checkOTP, checkPhone, verifyOtpRegister } from "../controller/userController.js";
 import express from "express";
 
 const Router = express.Router();
@@ -11,5 +11,6 @@ Router.post("/resetpass", resetPassword);
 Router.get("/checksession", checkSession);
 Router.get("/checkotp", checkOTP);
 Router.get("/checkphone", checkPhone);
+Router.post("/verifyotpregister", verifyOtpRegister);
 
 export default Router;

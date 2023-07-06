@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
 export default function ForgotPass() {
   const Toast = Swal.mixin({
     toast: true,
@@ -55,18 +58,19 @@ export default function ForgotPass() {
               <div className="rounded-md shadow-sm -space-y-px">
                 <div className="mb-7">
                   <label htmlFor="phone" className="sr-only">
-                    Nomor Telepon
+                    Phone
                   </label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="phone"
-                    autoComplete="phone"
-                    required
-                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Nomor Telepon"
+                  <PhoneInput
+                    inputStyle={{ width: "100%" }}
+                    country={"id"}
                     value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
+                    onChange={(phone) => setPhone(phone)}
+                    inputProps={{
+                      name: "phone",
+                      required: true,
+                      autoFocus: true,
+                      enableSearch: true,
+                    }}
                   />
                 </div>
               </div>
